@@ -15,4 +15,4 @@ I originally setup a prototype using Nx, which has a great DX in regards to init
 
 ## CI Steps
 
-To make sure we always generate and commit new JS code, we use husky+lint-staged. Whenever a change to a typescript file in the `lib` package is committed, we run the `build` command and add the output to the commit.
+To make sure we always generate and commit new JS code, we use husky+lint-staged. Whenever a change to a typescript file in the `lib` package is committed, we run the `build` command and add the output to the commit. Due to some weirdness where the `tsc` seems to finish before files are actually written to disk, we use the `wait-on` package (see the `build` command in the `lib` package.json) to ensure that the command is not considered complete until the new files actually exist.
