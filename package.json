@@ -7,8 +7,18 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "commit": "cz"
+  },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.8",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
     "typescript": "^5.8.3"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
