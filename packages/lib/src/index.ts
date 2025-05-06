@@ -1,1 +1,2 @@
-export const a = 5;
+export const reverse = <T>(arr: T[]): T[] =>
+	[...arr].reverse();
