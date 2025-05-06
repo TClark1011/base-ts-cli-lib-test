@@ -11,7 +11,7 @@
     "commit": "cz",
     "version": "bumpp -r",
     "build:lib": "npm run build --workspace @bt/lib",
-    "preversion": "npm run build:lib"
+    "preversion": "npm run build:lib && git add packages/lib/js"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.8",
