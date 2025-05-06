@@ -11,6 +11,7 @@
     "commit": "cz",
     "version": "bumpp -r",
     "build:lib": "npm run build --workspace @bt/lib",
+    "gen:docs": "typedoc",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -20,6 +21,8 @@
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.1",
+    "typedoc": "^0.28.4",
+    "typedoc-plugin-markdown": "^4.6.3",
     "typescript": "^5.8.3",
     "wait-on": "^8.0.3"
   },

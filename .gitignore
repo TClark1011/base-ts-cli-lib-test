@@ -1,6 +1,9 @@
 node_modules
 dist
 
+# generated documentation
+docs_gen
+
 # typescript build artifacts
 tsconfig.tsbuildinfo
 tsconfig.*.tsbuildinfo
