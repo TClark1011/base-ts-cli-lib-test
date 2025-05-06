@@ -10,7 +10,8 @@
   "scripts": {
     "commit": "cz",
     "version": "bumpp -r",
-    "build:lib": "npm run build --workspace @bt/lib"
+    "build:lib": "npm run build --workspace @bt/lib",
+    "preversion": "npm run build:lib"
   },
   "devDependencies": {
     "@tsconfig/recommended": "^1.0.8",
