@@ -2,8 +2,8 @@
 	"name": "@bt/lib",
 	"version": "1.7.0",
 	"scripts": {
-		"clean-build": "tsc --build --clean && tsc",
+		"rm-build": "tsc --build --clean",
 		"wait-on-build": "wait-on js/index.js",
-		"build": "npm run clean-build && tsc && npm run wait-on-build"
+		"build": "npm run rm-build && tsc && npm run wait-on-build"
 	}
 }
