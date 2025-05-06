@@ -2,8 +2,8 @@
 	"name": "@bt/lib",
 	"version": "1.7.0",
 	"scripts": {
-		"rm-build": "tsc --build --clean",
-		"wait-on-build": "wait-on js/index.js",
+		"rm-build": "rimraf js",
+		"wait-on-build": "wait-on js",
 		"build": "npm run rm-build && tsc && npm run wait-on-build"
 	}
 }
