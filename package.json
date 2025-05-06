@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "workspaces": [
+    "packages/*"
+  ]
 }
