@@ -6,3 +6,6 @@ export const sort = <T>(arr: T[], comparator: (a: T, b: T) => number): T[] =>
 
 export const isString = (value: unknown): value is string =>
 	typeof value === 'string';
+
+export const isNumber = (value: unknown): value is number =>
+	typeof value === 'number';
