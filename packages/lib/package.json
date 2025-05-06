@@ -1,3 +1,6 @@
 {
-	"name": "@bt/lib"
+	"name": "@bt/lib",
+	"scripts": {
+		"build": "tsc"
+	}
 }
