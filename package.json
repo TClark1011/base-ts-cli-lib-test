@@ -30,7 +30,7 @@
   "lint-staged": {
     "packages/lib/src/**/*.ts": [
       "npm run build:lib",
-      "git add packages/lib/js/**/*.js"
+      "echo hi"
     ]
   }
 }
