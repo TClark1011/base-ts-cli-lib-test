@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "dist",
+    "outDir": "js",
     "target": "ES2020",
     "module": "ES2020"
     // match target and module for minimal transformation
