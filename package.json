@@ -20,7 +20,8 @@
     "cz-conventional-changelog": "^3.3.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.5.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "wait-on": "^8.0.3"
   },
   "config": {
     "commitizen": {
@@ -30,7 +31,7 @@
   "lint-staged": {
     "packages/lib/src/**/*.ts": [
       "npm run build:lib",
-      "echo hi"
+      "git add packages/lib/js"
     ]
   }
 }
