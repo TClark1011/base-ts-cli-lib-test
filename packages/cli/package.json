@@ -1,0 +1,7 @@
+{
+	"name": "@bt/cli",
+	"version": "1.7.0",
+	"engines": {
+		"node": ">=23.6.0"
+	}
+}
