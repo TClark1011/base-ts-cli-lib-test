@@ -24,4 +24,5 @@ To make sure we always generate and commit new JS code, we use husky+lint-staged
 
 - `cz-conventional-changelog` CLI for making sure commits adhere to the conventional changelog format.
 - `bumpp` for bumping versions. This is not automated as you have to manually interact with the CLI, but I am totally fine with that, version bumping is one of those things that can be extremely fiddily and can be a headache to fix when something goes wrong.
+  - **IMPORTANT:** This may not be suitable for the actual release as it makes all package versions the same, which could be an issue for managing the CLI versioning.
 - Publishing - haven't set this up yet.
