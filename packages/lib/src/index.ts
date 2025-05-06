@@ -3,3 +3,6 @@ export const reverse = <T>(arr: T[]): T[] =>
 
 export const sort = <T>(arr: T[], comparator: (a: T, b: T) => number): T[] =>
 	[...arr].sort(comparator);
+
+export const isString = (value: unknown): value is string =>
+	typeof value === 'string';
