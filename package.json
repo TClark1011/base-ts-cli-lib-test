@@ -12,6 +12,7 @@
     "version": "bumpp -r",
     "build:lib": "npm run build --workspace @bt/lib",
     "build:types": "npm run build --workspace @bt/types",
+    "build:registry": "npm run registry --workspace @bt/scripts",
     "gen:docs": "typedoc",
     "prepare": "husky"
   },
@@ -23,6 +24,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^15.5.1",
     "rimraf": "^6.0.1",
+    "tsx": "^4.19.4",
     "typedoc": "^0.28.4",
     "typedoc-plugin-markdown": "^4.6.3",
     "typescript": "^5.8.3",

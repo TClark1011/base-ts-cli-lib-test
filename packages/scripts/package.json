@@ -1,0 +1,14 @@
+{
+	"name": "@bt/scripts",
+	"version": "1.7.0",
+	"private": true,
+	"scripts": {
+		"registry": "tsx src/registry.ts"
+	},
+	"dependencies": {
+		"@bt/types": "*"
+	},
+	"devDependencies": {
+		"@types/node": "^22.15.14"
+	}
+}
