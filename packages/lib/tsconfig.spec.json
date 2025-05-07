@@ -1,0 +1,9 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": true,
+    "outDir": "./out-tsc/spec",
+    "types": ["node"]
+  },
+  "files": ["src/**/*.spec.ts", "src/**/*.test.ts"]
+}
