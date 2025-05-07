@@ -4,9 +4,7 @@
 	"scripts": {
 		"rm-build": "rimraf js",
 		"wait-on-build": "wait-on js",
-		"build": "npm run rm-build && tsc && npm run wait-on-build"
-	},
-	"devDependencies": {
-		"@types/node": "^22.15.14"
+		"build": "npm run rm-build && tsc && npm run wait-on-build",
+		"test": "node --import=tsx --test \"src/**/*.{test,spec}.ts\""
 	}
 }

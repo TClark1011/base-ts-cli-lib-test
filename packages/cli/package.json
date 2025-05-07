@@ -3,6 +3,9 @@
 	"version": "1.7.0",
 	"type": "module",
 	"bin": "src/index.ts",
+	"scripts": {
+		"test": "node --import=tsx --test \"src/**/*.{test,spec}.ts\""
+	},
 	"engines": {
 		"node": ">=23.6.0"
 	},
