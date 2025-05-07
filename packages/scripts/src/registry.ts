@@ -2,7 +2,7 @@
  * This script acts as a type-safe way to write the registry file
  */
 
-import { UtilityFunctionRegistry } from "@bt/shared";
+import { UtilityFunctionRegistry, utilityFunctionRegistrySchema } from "@bt/shared";
 import path from "path";
 import fs from "fs";
 
@@ -14,7 +14,9 @@ const REGISTRY: UtilityFunctionRegistry = [
 		ts: 'packages/lib/src/array/reverse.ts',
 		js: 'packages/lib/dist/array/reverse.js',
 	}
-]
+];
+
+utilityFunctionRegistrySchema.parse(REGISTRY);
 
 // Then we write it to the registry.json file
 
