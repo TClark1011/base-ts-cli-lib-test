@@ -6,7 +6,7 @@
 		"registry": "tsx src/registry.ts"
 	},
 	"dependencies": {
-		"@bt/types": "*"
+		"@bt/shared": "*"
 	},
 	"devDependencies": {
 		"@types/node": "^22.15.14"

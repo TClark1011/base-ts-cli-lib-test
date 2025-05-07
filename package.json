@@ -11,7 +11,7 @@
     "commit": "cz",
     "version": "bumpp -r",
     "build:lib": "npm run build --workspace @bt/lib",
-    "build:types": "npm run build --workspace @bt/types",
+    "build:types": "npm run build --workspace @bt/shared",
     "build:registry": "npm run registry --workspace @bt/scripts",
     "gen:docs": "typedoc",
     "prepare": "husky"

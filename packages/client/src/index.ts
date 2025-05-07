@@ -1,4 +1,4 @@
-import { utilityFunctionRegistrySchema, UtilityFunctionRegistry } from "@bt/types";
+import { utilityFunctionRegistrySchema, UtilityFunctionRegistry } from "@bt/shared";
 import { gitHubContentResponse } from "./types";
 
 export class UtilityFunctionCodeClient {

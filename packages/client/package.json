@@ -5,6 +5,6 @@
 	"type": "module",
 	"dependencies": {
 		"zod": "^3.24.4",
-		"@bt/types": "*"
+		"@bt/shared": "*"
 	}
 }

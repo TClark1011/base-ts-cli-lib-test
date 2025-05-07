@@ -2,7 +2,7 @@
  * This script acts as a type-safe way to write the registry file
  */
 
-import { UtilityFunctionRegistry } from "@bt/types";
+import { UtilityFunctionRegistry } from "@bt/shared";
 import path from "path";
 import fs from "fs";
 
