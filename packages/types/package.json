@@ -1,0 +1,12 @@
+{
+	"name": "@bt/types",
+	"version": "1.7.0",
+	"private": true,
+	"scripts": {
+		"build": "tsc"
+	},
+	"main": "dist/index.js",
+	"dependencies": {
+		"zod": "^3.24.4"
+	}
+}

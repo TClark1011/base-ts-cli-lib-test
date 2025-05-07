@@ -1,5 +1,10 @@
 {
 	"name": "@bt/client",
 	"description": "API Client for the bt utility library",
-	"version": "1.7.0"
+	"version": "1.7.0",
+	"type": "module",
+	"dependencies": {
+		"zod": "^3.24.4",
+		"@bt/types": "*"
+	}
 }
