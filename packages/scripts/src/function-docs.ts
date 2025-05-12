@@ -5,27 +5,6 @@ import { Project, VariableStatement } from 'ts-morph';
 import ch from 'chalk';
 import { mkdirSync, writeFileSync } from 'fs';
 
-const hasStringMessage = (val: unknown): val is Record<'message', string> =>
-	typeof val === 'object' &&
-	val !== null &&
-	'message' in val &&
-	typeof val.message === 'string';
-
-export const extractErrorMessage = (
-	errorObject: unknown,
-	fallback?: string
-): string => {
-	if (typeof errorObject === 'string') return errorObject;
-
-	if (hasStringMessage(errorObject)) return errorObject.message;
-
-	if (fallback !== undefined) return fallback;
-
-	// Last resort, if we are unable to reasonably derive
-	// an error message from the object, we just stringify
-	// the whole thing and return that
-	return JSON.stringify(errorObject);
-};
 
 const getVariableStatementName = (variableStatement: VariableStatement): string => {
 	const declaration = variableStatement.getDeclarations()[0];
@@ -34,23 +13,35 @@ const getVariableStatementName = (variableStatement: VariableStatement): string 
 	return declaration.getName();
 }
 
+const removeImportLines = (code: string): string => {
+	const lines = code.split('\n');
+	const filteredLines = lines.filter(line => !line.trim().startsWith('import'));
+	const joined = filteredLines.join('\n');
+
+	// remove trailing new lines
+	const trimmed = joined.replace(/\n+$/, '').trim();
+	return trimmed;
+}
+
 
 const LIB_PATH = join(cwd(), '../lib');
 
 
-const project = new Project({
+const libProject = new Project({
 	tsConfigFilePath: join(LIB_PATH, 'tsconfig.json')
 })
+const examplesProject = new Project({
+	tsConfigFilePath: join(LIB_PATH, 'tsconfig.examples.json'),
+});
 
-
-
-const functionFiles = project.getSourceFiles(join(LIB_PATH, 'src/*/*.ts'));
+const functionFiles = libProject.getSourceFiles(join(LIB_PATH, 'src/*/*.ts'));
 
 
 type FunctionFileListing = {
 	category: string;
 	functionName: string;
 	description: string;
+	exampleCode?: string;
 }
 
 const undocumentedFileNames: string[] = [];
@@ -58,6 +49,7 @@ const undocumentedFileNames: string[] = [];
 const listings: FunctionFileListing[] = functionFiles.map(sourceFile => {
 	const fileName = sourceFile.getBaseName();
 	const directoryName = sourceFile.getDirectory().getBaseName();
+	const fileNameNoExt = sourceFile.getBaseNameWithoutExtension();
 
 	try {
 		const variableStatement = sourceFile.getVariableStatements()[0];
@@ -68,17 +60,20 @@ const listings: FunctionFileListing[] = functionFiles.map(sourceFile => {
 
 		const description = theJsDoc.getDescription().trim();
 
+		const exampleSourceFile = examplesProject.getSourceFile(`${fileNameNoExt}.example.ts`);
+		const exampleCode = exampleSourceFile?.getFullText().trim();
+
 
 		return {
 			category: directoryName,
 			functionName: getVariableStatementName(variableStatement),
-			description
+			description,
+			exampleCode: exampleCode ? removeImportLines(exampleCode).trim() : undefined,
 		}
 
-	} catch (err) {
+	} catch (err: any) {
 		undocumentedFileNames.push(`${directoryName}/${fileName}`);
-		return undefined
-		// throw new Error(`[${directoryName}/${fileName}]: ${extractErrorMessage(err)}`);
+		throw new Error(`[${directoryName}/${fileName}]: ${err.message}`);
 	}
 }).filter(val => !!val)
 
@@ -86,11 +81,17 @@ const listings: FunctionFileListing[] = functionFiles.map(sourceFile => {
 const createdDocFiles: string[] = [];
 
 const OUTPUT_ROOT = join(cwd(), '../../function_docs_gen')
-listings.forEach(({ category, functionName, description }) => {
+listings.forEach(({ category, functionName, description, exampleCode }) => {
 
 	const fileContents = [
 		`# ${functionName}`,
 		description,
+		...(exampleCode ? [
+			'## Example',
+			'```ts',
+			exampleCode,
+			'```'
+		] : [])
 	].join('\n\n');
 
 	const categoryDir = join(OUTPUT_ROOT, category);
