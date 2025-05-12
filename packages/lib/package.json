@@ -2,9 +2,9 @@
 	"name": "@bt/lib",
 	"version": "1.7.0",
 	"scripts": {
-		"rm-build": "rimraf js",
+		"rm-build": "rimraf js && rimraf tsconfig.lib.tsbuildinfo",
 		"wait-on-build": "wait-on js",
-		"build": "npm run rm-build && tsc && npm run wait-on-build",
+		"build": "npm run rm-build && tsc -p tsconfig.lib.json && npm run wait-on-build",
 		"test": "node --import=tsx --test \"src/**/*.{test,spec}.ts\""
 	}
 }

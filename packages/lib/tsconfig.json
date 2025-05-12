@@ -1,12 +1,12 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "outDir": "js",
     "target": "ES2020",
-    "module": "ES2020"
+    "module": "ES2020",
+    "declaration": false
     // match target and module for minimal transformation
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "examples/**/*.ts"],
   "exclude": ["src/**/*.test.ts", "src/**/*.spec.ts"],
   "references": [
     {
@@ -14,6 +14,9 @@
     },
     {
       "path": "./tsconfig.examples.json"
+    },
+    {
+      "path": "./tsconfig.lib.json"
     }
   ]
 }

@@ -3,5 +3,10 @@
   "compilerOptions": {
     "composite": true
   },
-  "include": ["examples/**/*.ts"]
+  "include": ["examples/**/*.ts"],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ]
 }

@@ -82,17 +82,19 @@ const createdDocFiles: string[] = [];
 
 const OUTPUT_ROOT = join(cwd(), '../../function_docs_gen')
 listings.forEach(({ category, functionName, description, exampleCode }) => {
-
 	const fileContents = [
 		`# ${functionName}`,
+		'',
 		description,
+		'',
 		...(exampleCode ? [
 			'## Example',
+			'',
 			'```ts',
 			exampleCode,
 			'```'
 		] : [])
-	].join('\n\n');
+	].join('\n');
 
 	const categoryDir = join(OUTPUT_ROOT, category);
 
