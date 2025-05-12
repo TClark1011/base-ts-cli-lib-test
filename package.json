@@ -47,6 +47,7 @@
   "lint-staged": {
     "packages/lib/{src,examples}/**/*.ts": [
       "npm run build:lib",
+      "npm run gen:function-docs",
       "git add packages/lib/js",
       "git add packages/docs/src/content/docs/functions"
     ]
