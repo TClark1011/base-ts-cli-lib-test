@@ -3,6 +3,7 @@ dist
 
 # generated documentation
 docs_gen
+function_docs_gen
 
 # typescript build artifacts
 tsconfig.tsbuildinfo

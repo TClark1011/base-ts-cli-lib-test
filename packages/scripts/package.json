@@ -3,10 +3,12 @@
 	"version": "1.7.0",
 	"private": true,
 	"scripts": {
-		"registry": "tsx src/registry.ts"
+		"registry": "tsx src/registry.ts",
+		"function-docs": "tsx src/function-docs.ts"
 	},
 	"dependencies": {
-		"@bt/shared": "*"
+		"@bt/shared": "*",
+		"radash": "^12.1.0"
 	},
 	"devDependencies": {
 		"@types/node": "^22.15.14"
