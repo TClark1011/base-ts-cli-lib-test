@@ -80,10 +80,12 @@ const listings: FunctionFileListing[] = functionFiles.map(sourceFile => {
 
 const createdDocFiles: string[] = [];
 
-const OUTPUT_ROOT = join(cwd(), '../../function_docs_gen')
+const OUTPUT_ROOT = join(cwd(), '../docs/src/content/docs/functions')
 listings.forEach(({ category, functionName, description, exampleCode }) => {
 	const fileContents = [
-		`# ${functionName}`,
+		'---',
+		`title: ${functionName}`,
+		'---',
 		'',
 		description,
 		'',

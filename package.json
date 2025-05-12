@@ -13,6 +13,7 @@
     "build:lib": "npm run build --workspace @bt/lib",
     "build:types": "npm run build --workspace @bt/shared",
     "build:registry": "npm run registry --workspace @bt/scripts",
+    "dev:docs": "npm run dev --workspace @bt/docs",
     "test:lib": "npm run test --workspace @bt/lib",
     "test:cli": "npm run test --workspace @bt/cli",
     "test": "run-p test:* --aggregate-output",
@@ -44,9 +45,10 @@
     }
   },
   "lint-staged": {
-    "packages/lib/src/**/*.ts": [
+    "packages/lib/{src,examples}/**/*.ts": [
       "npm run build:lib",
-      "git add packages/lib/js"
+      "git add packages/lib/js",
+      "git add packages/docs/src/content/docs/functions"
     ]
   }
 }
