@@ -1,1 +1,8 @@
-[{"name":"reverse","group":"array","ts":"packages/lib/src/array/reverse.ts","js":"packages/lib/dist/array/reverse.js"}]
+[
+  {
+    "name": "reverse",
+    "group": "array",
+    "ts": "packages/lib/src/array/reverse.ts",
+    "js": "packages/lib/dist/array/reverse.js"
+  }
+]

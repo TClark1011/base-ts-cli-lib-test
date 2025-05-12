@@ -13,6 +13,7 @@
     "build:lib": "npm run build --workspace @bt/lib",
     "build:types": "npm run build --workspace @bt/shared",
     "build:registry": "npm run registry --workspace @bt/scripts",
+    "build:docs": "npm run gen:function-docs && npm run build --workspace @bt/docs",
     "dev:docs": "npm run dev --workspace @bt/docs",
     "test:lib": "npm run test --workspace @bt/lib",
     "test:cli": "npm run test --workspace @bt/cli",

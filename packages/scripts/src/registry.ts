@@ -12,7 +12,7 @@ const REGISTRY: UtilityFunctionRegistry = [
 		name: 'reverse',
 		group: 'array',
 		ts: 'packages/lib/src/array/reverse.ts',
-		js: 'packages/lib/dist/array/reverse.js',
+		js: 'packages/lib/js/array/reverse.js',
 	}
 ];
 
