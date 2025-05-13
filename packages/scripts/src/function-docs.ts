@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { cwd } from 'process';
 import { title } from 'radash';
-import { Project, VariableStatement } from 'ts-morph';
+import { ArrowFunction, FunctionDeclaration, Project, SyntaxKind, TypeFormatFlags, VariableStatement } from 'ts-morph';
 import ch from 'chalk';
 import { mkdirSync, writeFileSync } from 'fs';
 
@@ -23,6 +23,40 @@ const removeImportLines = (code: string): string => {
 	return trimmed;
 }
 
+const getFunctionSignatureText = (name: string, functionDeclaration: FunctionDeclaration | ArrowFunction): string => {
+	// Get type parameters (generics)
+	const typeParams = functionDeclaration.getTypeParameters();
+	const genericsText = typeParams.length > 0
+		? `<${typeParams.map(tp => {
+			const constraint = tp.getConstraint();
+			const defaultType = tp.getDefault();
+			let text = tp.getName();
+			if (constraint) text += ` extends ${constraint.getText()}`;
+			if (defaultType) text += ` = ${defaultType.getText()}`;
+			return text;
+		}).join(", ")}>`
+		: "";
+
+	// Get parameters
+	const params = functionDeclaration.getParameters().map(p => {
+		const paramName = p.getName();
+		const typeNode = p.getTypeNode();
+		const paramType = typeNode ? typeNode.getText() : "any";
+		const isOptional = p.isOptional();
+		return `${paramName}${isOptional ? "?" : ""}: ${paramType}`;
+	}).join(", ");
+
+	// Get return type
+	// const returnType = functionDeclaration.getReturnTypeNode()?.getText() ?? "any";
+	const returnType = functionDeclaration.getReturnTypeNode()
+		?.getType()
+		?.getText(undefined, TypeFormatFlags.InTypeAlias | TypeFormatFlags.MultilineObjectLiterals)
+		?.replaceAll(';', ';\n')
+		?.replaceAll('{', '{\n') ?? "any";
+
+	return `function ${name}${genericsText}(${params}): ${returnType}`;
+}
+
 
 const LIB_PATH = join(cwd(), '../lib');
 
@@ -41,6 +75,7 @@ type FunctionFileListing = {
 	category: string;
 	functionName: string;
 	description: string;
+	functionSignature: string;
 	exampleCode?: string;
 }
 
@@ -55,6 +90,8 @@ const listings: FunctionFileListing[] = functionFiles.map(sourceFile => {
 		const variableStatement = sourceFile.getVariableStatements()[0];
 		if (!variableStatement) throw new Error(`No variable statement found`);
 
+		const functionName = getVariableStatementName(variableStatement);
+
 		const theJsDoc = variableStatement.getJsDocs()[0];
 		if (!theJsDoc) throw new Error(`No JSDoc found`);
 
@@ -63,17 +100,20 @@ const listings: FunctionFileListing[] = functionFiles.map(sourceFile => {
 		const exampleSourceFile = examplesProject.getSourceFile(`${fileNameNoExt}.example.ts`);
 		const exampleCode = exampleSourceFile?.getFullText().trim();
 
+		const arrowFunction = variableStatement.getFirstDescendantByKindOrThrow(SyntaxKind.ArrowFunction);
 
 		return {
 			category: directoryName,
-			functionName: getVariableStatementName(variableStatement),
+			functionName,
 			description,
+			functionSignature: getFunctionSignatureText(functionName, arrowFunction),
 			exampleCode: exampleCode ? removeImportLines(exampleCode).trim() : undefined,
 		}
 
 	} catch (err: any) {
 		undocumentedFileNames.push(`${directoryName}/${fileName}`);
-		throw new Error(`[${directoryName}/${fileName}]: ${err.message}`);
+		// return undefined;
+		throw new Error(`${err.message} (${directoryName}/${fileName})`);
 	}
 }).filter(val => !!val)
 
@@ -81,7 +121,7 @@ const listings: FunctionFileListing[] = functionFiles.map(sourceFile => {
 const createdDocFiles: string[] = [];
 
 const OUTPUT_ROOT = join(cwd(), '../docs/src/content/docs/functions')
-listings.forEach(({ category, functionName, description, exampleCode }) => {
+listings.forEach(({ category, functionName, description, exampleCode, functionSignature }) => {
 	const fileContents = [
 		'---',
 		`title: ${functionName}`,
@@ -94,8 +134,15 @@ listings.forEach(({ category, functionName, description, exampleCode }) => {
 			'',
 			'```ts',
 			exampleCode,
-			'```'
-		] : [])
+			'```',
+			'',
+		] : []),
+		'## Signature',
+		'',
+		'```ts',
+		functionSignature,
+		'```',
+
 	].join('\n');
 
 	const categoryDir = join(OUTPUT_ROOT, category);

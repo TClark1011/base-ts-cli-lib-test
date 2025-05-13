@@ -11,3 +11,9 @@ isNumber(1); // true
 isNumber('hello'); // false
 isNumber('1'); // false
 ```
+
+## Signature
+
+```ts
+function isNumber(value: unknown): boolean
+```

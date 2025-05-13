@@ -31,3 +31,9 @@ sortBy(fruits, (f) => f.color)
 // 	color: 'yellow',
 // }]
 ```
+
+## Signature
+
+```ts
+function sortBy<T>(arr: T[], getKey: (item: T) => string | number | boolean): T[]
+```
