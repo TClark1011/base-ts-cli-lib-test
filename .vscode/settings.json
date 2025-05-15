@@ -1,0 +1,44 @@
+{
+  "folderTemplates.structures": [
+    {
+      "name": "Function",
+
+      "structure": [
+        {
+          "fileName": "<FTName>.ts",
+          "template": "Function Main File"
+        },
+        {
+          "fileName": "<FTName>.spec.ts",
+          "template": "Function Tests"
+        },
+        {
+          "fileName": "<FTName>.example.ts",
+          "template": "Function example"
+        }
+      ]
+    }
+  ],
+  "folderTemplates.fileTemplates": {
+    "Function Main File": [
+      "/**",
+      " * A description of the function.",
+      " */",
+      "export const <FTName> = () => {",
+      "\treturn;",
+      "};"
+    ],
+    "Function Example": [
+      "import { <FTName> } from './<FTName>';",
+      "",
+      "<FTName>();"
+    ],
+    "Function Tests": [
+      "import { describe, it, expect } from 'vitest';",
+      "import { <FTName> } from './<FTName>';",
+      "",
+      "describe('<FTName>', () => {",
+      "})"
+    ]
+  }
+}
