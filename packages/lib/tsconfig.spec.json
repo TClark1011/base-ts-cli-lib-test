@@ -4,7 +4,7 @@
     "composite": true,
     "types": ["node"]
   },
-  "files": ["src/**/*.spec.ts", "src/**/*.test.ts"],
+  "files": ["src/**/*.spec.ts", "src/**/*.test.ts", "vitest.config.ts"],
   "references": [
     {
       "path": "./tsconfig.lib.json"

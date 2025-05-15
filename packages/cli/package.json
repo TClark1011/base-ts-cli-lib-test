@@ -4,7 +4,7 @@
 	"type": "module",
 	"bin": "src/index.ts",
 	"scripts": {
-		"test": "node --import=tsx --test \"src/**/*.{test,spec}.ts\""
+		"test": "vitest"
 	},
 	"engines": {
 		"node": ">=23.6.0"

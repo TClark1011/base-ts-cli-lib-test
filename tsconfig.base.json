@@ -4,5 +4,6 @@
     // Future Proofing for native node support
     "erasableSyntaxOnly": true,
     "noUncheckedIndexedAccess": true
-  }
+  },
+  "include": ["vitest.config.ts"]
 }

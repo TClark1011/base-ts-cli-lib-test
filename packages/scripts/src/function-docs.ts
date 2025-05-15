@@ -23,6 +23,7 @@ const removeImportLines = (code: string): string => {
 	return trimmed;
 }
 
+
 const getFunctionSignatureText = (name: string, functionDeclaration: FunctionDeclaration | ArrowFunction): string => {
 	// Get type parameters (generics)
 	const typeParams = functionDeclaration.getTypeParameters();
@@ -79,7 +80,6 @@ type FunctionFileListing = {
 	exampleCode?: string;
 }
 
-const undocumentedFileNames: string[] = [];
 
 const listings: FunctionFileListing[] = functionFiles.map(sourceFile => {
 	const fileName = sourceFile.getBaseName();
@@ -111,12 +111,11 @@ const listings: FunctionFileListing[] = functionFiles.map(sourceFile => {
 		}
 
 	} catch (err: any) {
-		undocumentedFileNames.push(`${directoryName}/${fileName}`);
-		// return undefined;
 		throw new Error(`${err.message} (${directoryName}/${fileName})`);
 	}
 }).filter(val => !!val)
 
+const functionsMissingExamples = listings.filter(({ exampleCode }) => !exampleCode).map(({ category, functionName }) => `${category}/${functionName}`);
 
 const createdDocFiles: string[] = [];
 
@@ -164,11 +163,10 @@ if (createdDocFiles.length > 0) {
 	});
 }
 
-
-if (undocumentedFileNames.length > 0) {
+if (functionsMissingExamples.length > 0) {
 	console.log();
-	console.warn(ch.yellow(ch.bold('Warning:'), 'The following files are not documented:'));
-	undocumentedFileNames.forEach(fileName => {
+	console.warn(ch.yellow(ch.bold('Warning:'), 'The following functions are missing examples:'));
+	functionsMissingExamples.forEach(fileName => {
 		console.warn(ch.yellow(`- ${fileName}`));
 	});
 }

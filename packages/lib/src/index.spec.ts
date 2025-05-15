@@ -1,4 +1,4 @@
-import { it } from "node:test";
+import { it } from "vitest";
 import { reverse } from './array/reverse';
 import assert from "node:assert";
 

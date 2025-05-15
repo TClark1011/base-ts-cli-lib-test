@@ -1,3 +1,3 @@
-import { it } from "node:test";
+import { it } from "vitest";
 
 it("placeholder", () => { })

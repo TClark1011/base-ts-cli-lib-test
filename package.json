@@ -10,21 +10,22 @@
   "scripts": {
     "commit": "cz",
     "version": "bumpp -r",
-    "build:lib": "npm run build --workspace @bt/lib",
-    "build:types": "npm run build --workspace @bt/shared",
-    "build:registry": "npm run registry --workspace @bt/scripts",
-    "build:docs": "npm run gen:function-docs && npm run build --workspace @bt/docs",
-    "dev:docs": "npm run dev --workspace @bt/docs",
-    "test:lib": "npm run test --workspace @bt/lib",
-    "test:cli": "npm run test --workspace @bt/cli",
+    "build:lib": "cd packages/lib && nr build",
+    "build:shared": "cd packages/shared && nr build",
+    "build:registry": "cd packages/script && nr registry",
+    "build:docs": "nr gen:function-docs && cd packages/docs && nr build",
+    "dev:docs": "cd packages/docs && nr dev",
+    "test:lib": "cd packages/lib && nr test",
+    "test:cli": "cd packages/cli && nr test",
     "test": "run-p test:* --aggregate-output",
-    "gen:docs": "typedoc",
-    "gen:function-docs": "npm run function-docs --workspace @bt/scripts",
+    "gen:function-docs": "cd packages/scripts && nr function-docs",
     "prepare": "husky"
   },
   "devDependencies": {
+    "@antfu/ni": "^24.3.0",
     "@tsconfig/recommended": "^1.0.8",
     "@types/node": "^22.15.14",
+    "@vitest/coverage-v8": "^3.1.3",
     "bumpp": "^10.1.0",
     "chalk": "^5.4.1",
     "commitizen": "^4.3.1",
@@ -35,9 +36,8 @@
     "rimraf": "^6.0.1",
     "ts-morph": "^25.0.1",
     "tsx": "^4.19.4",
-    "typedoc": "^0.28.4",
-    "typedoc-plugin-markdown": "^4.6.3",
     "typescript": "^5.8.3",
+    "vitest": "^3.1.3",
     "wait-on": "^8.0.3"
   },
   "config": {
@@ -47,8 +47,8 @@
   },
   "lint-staged": {
     "packages/lib/{src,examples}/**/*.ts": [
-      "npm run build:lib",
-      "npm run gen:function-docs",
+      "nr build:lib",
+      "nr gen:function-docs",
       "git add packages/lib/js",
       "git add packages/docs/src/content/docs/functions"
     ]

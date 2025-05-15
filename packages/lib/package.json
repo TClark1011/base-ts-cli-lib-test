@@ -5,6 +5,6 @@
 		"rm-build": "rimraf js && rimraf tsconfig.lib.tsbuildinfo",
 		"wait-on-build": "wait-on js",
 		"build": "npm run rm-build && tsc -p tsconfig.lib.json && npm run wait-on-build",
-		"test": "node --import=tsx --test \"src/**/*.{test,spec}.ts\""
+		"test": "vitest"
 	}
 }
