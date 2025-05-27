@@ -1,5 +1,5 @@
 import { join } from "path";
-import { cwd } from "process";
+import { cwd, exit } from "process";
 import { title } from "radash";
 import {
   ArrowFunction,
@@ -27,10 +27,8 @@ const removeImportLines = (code: string): string => {
 
 const readableAsserts = (code: string): string =>
   code.replace(
-    /(assert\.equal\(([^,]+),\s*([^,]+)\);?)/g,
-    (_, fullMatch, varName, value) => {
-      return `${varName.trim()}; // ${value.trim()}`;
-    },
+    /assert\.(equal|strictEqual|deepEqual|deepStrictEqual)\(([^,]+),\s*([^)]+)\);?/g,
+    (_, _method, varName, value) => `${varName.trim()}; // ${value.trim()}`,
   );
 
 const transformExampleCode = (code: string): string => {
@@ -42,11 +40,10 @@ const transformExampleCode = (code: string): string => {
 
 const getVariableStatementName = (
   variableStatement: VariableStatement,
-): string => {
+): string | undefined => {
   const declaration = variableStatement.getDeclarations()[0];
-  if (!declaration) throw new Error(`No declaration found`);
 
-  return declaration.getName();
+  return declaration?.getName();
 };
 
 const getFunctionSignatureText = (
@@ -74,8 +71,7 @@ const getFunctionSignatureText = (
     .getParameters()
     .map((p) => {
       const paramName = p.getName();
-      const typeNode = p.getTypeNode();
-      const paramType = typeNode ? typeNode.getText() : "any";
+      const paramType = p.getType().getText();
       const isOptional = p.isOptional();
       return `${paramName}${isOptional ? "?" : ""}: ${paramType}`;
     })
@@ -83,16 +79,15 @@ const getFunctionSignatureText = (
 
   // Get return type
   // const returnType = functionDeclaration.getReturnTypeNode()?.getText() ?? "any";
-  const returnType =
-    functionDeclaration
-      .getReturnTypeNode()
-      ?.getType()
-      ?.getText(
-        undefined,
-        TypeFormatFlags.InTypeAlias | TypeFormatFlags.MultilineObjectLiterals,
-      )
-      ?.replaceAll(";", ";\n")
-      ?.replaceAll("{", "{\n") ?? "any";
+  const returnType = functionDeclaration
+    .getReturnType()
+    ?.getText(
+      undefined,
+      TypeFormatFlags.InTypeAlias | TypeFormatFlags.MultilineObjectLiterals,
+    )
+    ?.replaceAll(";", ";\n")
+    ?.replaceAll("{", "{\n");
+  assert(returnType, "Unable to extract return type");
 
   return `function ${name}${genericsText}(${params}): ${returnType}`;
 };
@@ -100,7 +95,7 @@ const getFunctionSignatureText = (
 const LIB_PATH = join(cwd(), "../lib");
 
 const libProject = new Project({
-  tsConfigFilePath: join(LIB_PATH, "tsconfig.json"),
+  tsConfigFilePath: join(LIB_PATH, "tsconfig.lib.json"),
 });
 const examplesProject = new Project({
   tsConfigFilePath: join(LIB_PATH, "tsconfig.examples.json"),
@@ -116,53 +111,55 @@ type FunctionFileListing = {
   exampleCode?: string;
 };
 
-const listings: FunctionFileListing[] = functionFiles
-  .map((sourceFile) => {
-    const fileName = sourceFile.getBaseName();
-    const functionCategory = sourceFile
-      .getDirectory()
-      .getParent()
-      ?.getBaseName();
-    assert(functionCategory);
-    const fileNameNoExt = sourceFile.getBaseNameWithoutExtension();
+const listings: FunctionFileListing[] = functionFiles.map((sourceFile) => {
+  const fileName = sourceFile.getBaseName();
+  const functionCategory = sourceFile.getDirectory().getParent()?.getBaseName();
+  assert(functionCategory);
+  const fileNameNoExt = sourceFile.getBaseNameWithoutExtension();
 
-    try {
-      const variableStatement = sourceFile.getVariableStatements()[0];
-      if (!variableStatement) throw new Error(`No variable statement found`);
+  try {
+    const variableStatement = sourceFile.getVariableStatements()[0];
+    assert(variableStatement, `No variable statement found in ${fileName}`);
 
-      const functionName = getVariableStatementName(variableStatement);
+    const functionName = getVariableStatementName(variableStatement);
+    assert(functionName, `Unable to extract function name from ${fileName}`);
 
-      const theJsDoc = variableStatement.getJsDocs()[0];
-      if (!theJsDoc) throw new Error(`No JSDoc found`);
+    const theJsDoc = variableStatement.getJsDocs()[0];
+    assert(theJsDoc, `No JSDoc found for ${functionName}`);
 
-      const description = theJsDoc.getDescription().trim();
+    const description = theJsDoc.getDescription().trim();
 
-      const exampleSourceFile = examplesProject.getSourceFile(
-        `${fileNameNoExt}.example.ts`,
-      );
-      const exampleCode = exampleSourceFile?.getFullText().trim();
+    assert.notEqual(
+      description,
+      "DESCRIPTION HERE",
+      `${functionCategory}/${functionName} has not been documented`,
+    );
 
-      const arrowFunction = variableStatement.getFirstDescendantByKindOrThrow(
-        SyntaxKind.ArrowFunction,
-      );
+    const exampleSourceFile = examplesProject.getSourceFile(
+      `${fileNameNoExt}.example.ts`,
+    );
+    const exampleCode = exampleSourceFile?.getFullText().trim();
 
-      return {
-        category: functionCategory,
-        functionName,
-        description,
-        functionSignature: getFunctionSignatureText(
-          functionName,
-          arrowFunction,
-        ),
-        exampleCode: exampleCode
-          ? transformExampleCode(exampleCode)
-          : undefined,
-      };
-    } catch (err: any) {
-      throw new Error(`${err.message} (${functionCategory}/${fileName})`);
-    }
-  })
-  .filter((val) => !!val);
+    const arrowFunction = variableStatement.getFirstDescendantByKindOrThrow(
+      SyntaxKind.ArrowFunction,
+    );
+
+    return {
+      category: functionCategory,
+      functionName,
+      description,
+      functionSignature: getFunctionSignatureText(functionName, arrowFunction),
+      exampleCode: exampleCode ? transformExampleCode(exampleCode) : undefined,
+    };
+  } catch (err: any) {
+    // throw new Error(`${err.message} (${sourceFile.getFilePath()})`);
+    console.error(
+      ch.red(ch.bold("Error:"), `${err.message} (${sourceFile.getFilePath()})`),
+    );
+
+    exit(1);
+  }
+});
 
 const functionsMissingExamples = listings
   .filter(({ exampleCode }) => !exampleCode)

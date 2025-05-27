@@ -22,7 +22,7 @@
   "folderTemplates.fileTemplates": {
     "Function Main File": [
       "/**",
-      " * A description of the function.",
+      " * DESCRIPTION HERE",
       " */",
       "export const <FTName> = () => {",
       "\treturn;",

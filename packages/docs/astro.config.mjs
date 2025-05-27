@@ -20,8 +20,24 @@ export default defineConfig({
           slug: "guides/example",
         },
         {
+          label: "Array",
+          autogenerate: { directory: "functions/array" },
+        },
+        {
+          label: "Function",
+          autogenerate: { directory: "functions/function" },
+        },
+        {
+          label: "Guard",
+          autogenerate: { directory: "functions/guard" },
+        },
+        {
           label: "Promise",
           autogenerate: { directory: "functions/promise" },
+        },
+        {
+          label: "String",
+          autogenerate: { directory: "functions/string" },
         },
       ],
     }),
