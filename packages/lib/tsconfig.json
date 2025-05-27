@@ -6,8 +6,6 @@
     "declaration": false
     // match target and module for minimal transformation
   },
-  "include": ["src/**/*.ts", "examples/**/*.ts"],
-  "exclude": ["src/**/*.test.ts", "src/**/*.spec.ts"],
   "references": [
     {
       "path": "./tsconfig.spec.json"

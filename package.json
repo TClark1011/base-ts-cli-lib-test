@@ -12,13 +12,13 @@
     "version": "bumpp -r",
     "build:lib": "cd packages/lib && nr build",
     "build:shared": "cd packages/shared && nr build",
-    "build:registry": "cd packages/script && nr registry",
     "build:docs": "nr gen:function-docs && cd packages/docs && nr build",
     "dev:docs": "cd packages/docs && nr dev",
     "test:lib": "cd packages/lib && nr test",
     "test:cli": "cd packages/cli && nr test",
     "test": "run-p test:* --aggregate-output",
-    "gen:function-docs": "cd packages/scripts && nr function-docs",
+    "gen:function-docs": "rimraf packages/docs/src/content/docs/functions && cd packages/scripts && nr function-docs",
+    "gen:registry": "cd packages/scripts && nr registry",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -45,13 +45,5 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  },
-  "lint-staged": {
-    "packages/lib/{src,examples}/**/*.ts": [
-      "nr build:lib",
-      "nr gen:function-docs",
-      "git add packages/lib/js",
-      "git add packages/docs/src/content/docs/functions"
-    ]
   }
 }

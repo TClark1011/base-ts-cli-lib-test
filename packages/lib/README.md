@@ -7,3 +7,7 @@ We first delete the previous build, then we run `tsc` to create a new build. The
 
 **Why are transpiled JS files in the repo?**
 So the CLI can fetch the JS code via the GitHub API.
+
+## Development Guidelines
+
+- To illustrate a value in example code, use `assert.equal`, with `assert` coming from `node:assert`. That way we can actually check the value is as expected by running the example code.

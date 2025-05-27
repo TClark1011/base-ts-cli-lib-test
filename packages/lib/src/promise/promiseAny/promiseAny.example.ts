@@ -1,5 +1,6 @@
-import { sleep } from "../../src/utils";
-import { promiseAny } from "../../src/promise/promiseAny/promiseAny";
+import assert from "node:assert";
+import { sleep } from "../../utils";
+import { promiseAny } from "./promiseAny";
 
 let resolvedPromises: number = 0;
 
@@ -20,6 +21,6 @@ promiseAny(
   ],
   (value) => value > 0,
 ).then((result) => {
-  result; // true
-  resolvedPromises; // 1
+  assert.equal(result, true);
+  assert.equal(resolvedPromises, 1);
 });
