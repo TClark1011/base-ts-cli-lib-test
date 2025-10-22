@@ -1,1 +1,1 @@
-[{"name":"promiseAny","group":"promise","ts":"packages/lib/src/promise/promiseAny/promiseAny.ts","js":"packages/lib/js/promise/promiseAny/promiseAny.js"}]
+[{"name":"promiseAny","group":"promise","ts":"packages/lib/src/promise/promiseAny/promiseAny.ts","js":"packages/lib/js/promise/promiseAny/promiseAny.js"}, {"name":"reverse","group":"array","ts":"packages/lib/src/array/reverse/reverse.ts","js":"packages/lib/js/array/reverse/reverse.js"}]
